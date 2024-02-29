@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'task/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'task/css/tasks.css' %}">
+    <link rel="stylesheet" href="{% static 'task/css/task_form.css' %}">
+    <link rel="stylesheet" href="{% static 'task/css/task_info.css' %}">
+
+
+    <link rel="stylesheet" href="{% static 'user/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'user/css/profile.css' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;600;900&display=swap" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<div class="container">
+    <ul class="navigation-panel">
+        <li class="header-item">
+            <a class="nav-link" aria-current="page" href="{% url 'router:home' %}">Home</a>
+        </li>
+        <li class="header-item">
+            <a class="nav-link" href="{% url 'router:user:info' %}">Profile</a>
+        </li>
+        <li class="header-item">
+            <a class="nav-link" href="{% url 'router:task:all-tasks' %}">Tasks</a>
+        </li>
+        <li class="header-item">
+            <a class="nav-link" href="#' %}">Subtasks</a>
+        </li>
+        <li class="header-item">
+            <a class="nav-link" href="{% url 'router:task:create-task' %}" tabindex="-1">Add Task</a>
+        </li>
+    </ul>
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

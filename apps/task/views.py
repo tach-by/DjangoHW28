@@ -8,8 +8,7 @@ from django.contrib.auth.models import User
 from apps.task.forms import (
     CreateTask,
     TaskUpdateForm,
-    CommentCreateForm,
-    CommentUpdateForm
+
 )
 from django.shortcuts import (
     get_object_or_404,
@@ -17,7 +16,7 @@ from django.shortcuts import (
 from django.contrib.auth.decorators import login_required
 
 
-@login_required(login_url='login')
+@login_required(login_url='router:user:login')
 def home_page(request):
     task = Task.objects.all()
     context = {'tasks': task}
@@ -28,8 +27,8 @@ def home_page(request):
     )
 
 
-@login_required(login_url='login')
-def get_all_task(request):
+@login_required(login_url='router:user:login')
+def get_all_tasks(request):
     tasks = Task.objects.all()
     context = {
         'tasks': tasks
@@ -41,7 +40,7 @@ def get_all_task(request):
     )
 
 
-@login_required(login_url='login')
+@login_required(login_url='router:user:login')
 def create_new_task(request):
     statuses = Status.objects.all()
     creators = User.objects.all()
@@ -51,7 +50,7 @@ def create_new_task(request):
         if form.is_valid():
             product_data = form.cleaned_data
             Task.objects.create(**product_data)
-            return redirect("all-task")
+            return redirect("all-tasks")
         context = {
             'form': form,
             'statuses': statuses,
@@ -72,7 +71,7 @@ def create_new_task(request):
     )
 
 
-@login_required(login_url='login')
+@login_required(login_url='router:user:login')
 def update_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     statuses = Status.objects.all()
@@ -82,7 +81,7 @@ def update_task(request, task_id):
 
         if form.is_valid():
             form.save()
-            return redirect('all-task')
+            return redirect('router:task:all-tasks')
 
         context = {
             "form": form,
@@ -105,7 +104,7 @@ def update_task(request, task_id):
     )
 
 
-@login_required(login_url='login')
+@login_required(login_url='router:user:login')
 def get_task_info_by_task_id(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     comments = Comment.objects.filter(
@@ -129,7 +128,7 @@ def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
     task.delete()
-    return redirect('all-task')
+    return redirect('router:task:all-tasks')
 
 
 @login_required(login_url='login')
@@ -232,4 +231,3 @@ def delete_comment(request, comment_id):
 
 
 
-# Create your views here.

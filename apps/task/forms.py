@@ -5,7 +5,7 @@ from django.forms import (
     widgets,
     ModelChoiceField
 )
-from task.models import Task, Status, Comment
+from apps.task.models import Task, Status, Comment
 
 
 class CreateTask(ModelForm):
@@ -16,7 +16,8 @@ class CreateTask(ModelForm):
     date_started = fields.DateField(
         widget=widgets.DateInput(attrs={'type': 'date'}))
     deadline = fields.DateField(
-        widget=widgets.DateInput(attrs={'type': 'date'}))
+        widget=widgets.DateInput(attrs={"type": "data"})
+    )
 
     class Meta:
         model = Task
@@ -34,16 +35,16 @@ class TaskUpdateForm(ModelForm):
         )
 
 
-class CommentCreateForm(ModelForm):
-    class Meta:
-        model = Comment
-        fields = [
-            'title',
-            'creator'
-        ]
+# class CommentCreateForm(ModelForm):
+#     class Meta:
+#         model = Comment
+#         fields = [
+#             'title',
+#             'creator'
+#         ]
 
 
-class CommentUpdateForm(ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['title',]
+# class CommentUpdateForm(ModelForm):
+#     class Meta:
+#         model = Comment
+#         fields = ['title',]
