@@ -23,7 +23,7 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover {
 }
 
 body {
-    background: url("https://wallpaperaccess.com/full/487834.jpg") no-repeat center center fixed; /* картинка заднего фона, без повторений, растянуть на весь экран, фиксированное положение */
+    background: url("https://w.forfun.com/fetch/f8/f81b41d370b87c3667e0469997a2b396.jpeg") no-repeat center center fixed; /* картинка заднего фона, без повторений, растянуть на весь экран, фиксированное положение */
     background-size: cover; /* растянуть на весь экран равномерно */
 }
 

@@ -50,7 +50,7 @@ def create_new_task(request):
         if form.is_valid():
             product_data = form.cleaned_data
             Task.objects.create(**product_data)
-            return redirect("all-tasks")
+            return redirect("router:tack:all-tasks")
         context = {
             'form': form,
             'statuses': statuses,
