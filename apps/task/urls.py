@@ -5,6 +5,8 @@ from apps.task.views import (
     update_task,
     get_task_info_by_task_id,
     delete_task,
+    CommentCreateView,
+
 
 )
 
@@ -16,4 +18,5 @@ urlpatterns = [
     path("<int:task_id>/", get_task_info_by_task_id, name='task-info'),
     path("<int:task_id>/update/", update_task, name='update-task'),
     path("<int:task_id>.delete/", delete_task, name='delete-task'),
+    path('task/<int:pk>/comments/create/', CommentCreateView.as_view(), name='comment_create_view'),
 ]

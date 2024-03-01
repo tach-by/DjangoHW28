@@ -48,3 +48,35 @@
 .task-link:hover h2, .task-link:hover h4, .task-link:hover p {
     color: #c3c1c1
 }
+
+.no-tasks-block {
+    border: 1px solid #16A08566;
+    text-align: center; /* Выравнивание текста и кнопки по центру */
+    padding: 20px; /* Добавление отступов внутри блока */
+    width: 447px;
+    box-shadow: 0 0 10px rgba(22, 160, 133, 0.7);
+}
+
+.no-tasks-block h1 {
+    color: rgba(22, 160, 133, 0.8);
+    font-weight: 700;
+    font-size: 45px;
+    margin-bottom: 20px;
+}
+
+.create-task {
+    border: 2px solid #16a085;
+    background-color: transparent;
+    color: #16a085;
+    margin: 0 auto;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px; /* Слегка закругленные углы */
+    display: inline-block; /* Блочно-строчный элемент для правильного отображения отступов и бордера */
+    transition: background-color 0.3s, color 0.3s; /* Плавный переход для фона и текста */
+}
+
+.create-task:hover {
+    background-color: rgba(22, 160, 133, 0.1);
+    color: #e0e0e0;
+}

@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+
 from django.forms import (
     ModelForm,
     fields,
@@ -48,3 +49,15 @@ class TaskUpdateForm(ModelForm):
 #     class Meta:
 #         model = Comment
 #         fields = ['title',]
+
+
+class CommentCreateForm(ModelForm):
+    """
+    Форма добавления комментариев к статьям
+    """
+    parent = fields.IntegerField(widget=widgets.HiddenInput, required=False)
+    content = fields.CharField(label='', widget=widgets.Textarea(attrs={'cols': 30, 'rows': 5, 'placeholder': 'Комментарий', 'class': 'form-control'}))
+
+    class Meta:
+        model = Comment
+        fields = ('content',)

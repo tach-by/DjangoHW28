@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'mptt',
+
 # losal
     'apps.task.apps.TaskConfig',
     'apps.user.apps.UserConfig',
