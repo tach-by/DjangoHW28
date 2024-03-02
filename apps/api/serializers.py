@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from apps.product.models import Product, Rating, Comment
+from apps.api.models import User, Article, Category
 
 
 # Напишите ModelSerializer для всех трёх моделей.
@@ -46,3 +47,27 @@ class ProductRatingCommentSerializer(serializers.Serializer):
             'ratings': rating_serializer.data,
             'comments': comment_serializer.data
         }
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'name']
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['id', 'name', 'description']
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
+
+
+class ArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = ['id', 'title', 'content']
