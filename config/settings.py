@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from environ import Env
 
+import apps.product.apps
+
 env=Env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,11 +44,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 3-rd party
+    'rest_framework',
     'mptt',
 
 # losal
     'apps.task.apps.TaskConfig',
     'apps.user.apps.UserConfig',
+    'apps.product.apps.ProductConfig',
+    'apps.api.apps.ApiConfig'
 ]
 
 MIDDLEWARE = [
