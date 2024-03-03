@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Update task
+{% endblock %}
+
+{% block content %}
+    <div class="update-task-title">
+        Update Task
+    </div>
+    <div class="task-container-form">
+        <form method="post" autocomplete="on">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title"
+                       maxlength="25" placeholder="Title" value="{{ task.title }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description"
+                          maxlength="1500">{{ task.description }}</textarea>
+            </div>
+
+
+
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="" selected="">{{ task.status }}</option>
+                    {% for status in statuses %}
+                        <option value="{{ status.id }}">{{ status.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="deadline" class="form-label">Deadline</label>
+                <input type="date" class="form-control" id="deadline" name="deadline">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+{% endblock %}
