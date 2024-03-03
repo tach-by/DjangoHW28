@@ -7,6 +7,6 @@ urlpatterns = [
     path("", home_page, name='home'),
     path("tasks/", include('apps.task.urls')),
     path("user/", include('apps.user.urls')),
-    path("product/", include('apps.product.urls')),
+
     path("api/", include('apps.api.urls')),
 ]
