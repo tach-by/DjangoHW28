@@ -1,0 +1,45 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    {{ task.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="task-content">
+        <div class="task-block">
+            <div class="task-info">
+                <h2><span class="task-info-fields">Title: </span>{{ task.title }}</h2>
+                <h4><span class="task-info-fields">Category: </span>{{ task.category }}</h4>
+                <h4><span class="task-info-fields">Status: </span><b>{{ task.status }}</b></h4>
+                <p><span class="task-info-fields">Description: </span>{{ task.description }}</p>
+                <h4><span class="task-info-fields">Creator: </span>{{ task.creator }}</h4>
+                <h4><span class="task-info-fields">Date started: </span>{{ task.date_started }}</h4>
+                <h4><span class="task-info-fields">Deadline: </span>{{ task.deadline }}</h4>
+            </div>
+            <div class="button-container">
+                <a href="{% url 'router:task:update-task' task.id %}" class="update-button">Update</a>
+                <a href="{% url 'router:task:delete-task' task.id %}" class="delete-button">Delete</a>
+            </div>
+        </div>
+
+    </div>
+{% for comment in task.comments.all %}
+    <div>
+        <p>{{ comment.user.username }}: {{ comment.text }}</p>
+        <small>{{ comment.created_at }}</small>
+        <a type="text" data-toggle="collapse" data-target="#reply{{comment.id}}" style="float: right;" href="">Reply</a>
+        <div id="reply{{comment.id}}" class="collapse in">
+            <form method="post" action="{% url 'router:task:reply_comment' comment.id %}">
+                {% csrf_token %}
+                <input name="reply_text" class="form-control form-control-lg" type="text" placeholder="Reply comment">
+                <button type="submit" class="btn btn-primary" style="float: right; margin-top: 5px;">Reply</button>
+            </form>
+        </div>
+    </div>
+{% endfor %}
+<form method="post">
+    {% csrf_token %}
+    <textarea name="comment_text" rows="4" cols="50"></textarea>
+    <button type="submit">Добавить комментарий</button>
+</form>
+{% endblock %}
