@@ -10,6 +10,7 @@ from rest_framework.serializers import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from apps.api.models import User, Product, Category, Article
 from .serializers import UserSerializer, ProductSerializer, CategorySerializer, ArticleSerializer
+from apps.api.mixins import LanguageVersionMixin
 
 # Создайте ViewSet, который позволяет получить список всех пользователей из базы данных.
 # Пользователи должны иметь возможность получить список всех пользователей в формате JSON,
@@ -107,3 +108,6 @@ class ArticleGenericAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ArticleSerializer
 
 
+class ContentListView(LanguageVersionMixin, generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
