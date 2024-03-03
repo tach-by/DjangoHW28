@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.views import View
+
 from apps.task.models import (
     Task,
     Status,
@@ -108,24 +110,24 @@ def update_task(request, task_id):
     )
 
 
-@login_required(login_url='router:user:login')
-def get_task_info_by_task_id(request, task_id):
-    task = get_object_or_404(Task, id=task_id)
-    comments = Comment.objects.filter(
-        task=task_id
-    )
-    form = CommentCreateForm
-    context = {
-        "task": task,
-        "comments": comments,
-        "form": form
-    }
-    #####
-    return render(
-        request=request,
-        template_name='task/task_info.html',
-        context=context
-    )
+# @login_required(login_url='router:user:login')
+# def get_task_info_by_task_id(request, task_id):
+#     task = get_object_or_404(Task, id=task_id)
+#     comments = Comment.objects.filter(
+#         task=task_id
+#     )
+#     form = CommentCreateForm
+#     context = {
+#         "task": task,
+#         "comments": comments,
+#         "form": form
+#     }
+#     #####
+#     return render(
+#         request=request,
+#         template_name='task/task_info.html',
+#         context=context
+#     )
 
 
 @login_required(login_url='login')
@@ -136,40 +138,71 @@ def delete_task(request, task_id):
     return redirect('router:task:all-tasks')
 
 
-class CommentCreateView(LoginRequiredMixin, CreateView):
-    model = Comment
-    form_class = CommentCreateForm
+# class CommentCreateView(LoginRequiredMixin, CreateView):
+#     model = Comment
+#     form_class = CommentCreateForm
+#
+#     def is_ajax(self):
+#         return self.request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+#
+#     def form_invalid(self, form):
+#         if self.is_ajax():
+#             return JsonResponse({'error': form.errors}, status=400)
+#         return super().form_invalid(form)
+#
+#     def form_valid(self, form):
+#         comment = form.save(commit=False)
+#         comment.task_id = self.kwargs.get('pk')
+#         comment.creator = self.request.user
+#         comment.parent_id = form.cleaned_data.get('parent')
+#         comment.save()
+#
+#         if self.is_ajax():
+#             return JsonResponse({
+#                 'is_child': comment.is_child_node(),
+#                 'id': comment.id,
+#                 'creator': comment.creator.username,
+#                 'parent_id': comment.parent_id,
+#                 'time_create': comment.time_create.strftime('%Y-%b-%d %H:%M:%S'),
+#                 'avatar': comment.creator.profile.avatar.url,
+#                 'content': comment.content,
+#                 'get_absolute_url': comment.creator.profile.get_absolute_url()
+#             }, status=200)
+#
+#         return redirect(comment.task.get_absolute_url())
+#
+#     def handle_no_permission(self):
+#         return JsonResponse({'error': 'Необходимо авторизоваться для добавления комментариев'}, status=400)
 
-    def is_ajax(self):
-        return self.request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
-    def form_invalid(self, form):
-        if self.is_ajax():
-            return JsonResponse({'error': form.errors}, status=400)
-        return super().form_invalid(form)
+class ReplyCommentView(View):
+    def post(self, request, comment_id):
+        parent_comment = Comment.objects.get(pk=comment_id)
+        new_comment = Comment(
+            text=request.POST['reply_text'],
+            user=request.user,
+            task=parent_comment.task,
+            parent=parent_comment
+        )
+        new_comment.save()
+        return redirect('router:task:task-info', task_id=parent_comment.task.id)
 
-    def form_valid(self, form):
-        comment = form.save(commit=False)
-        comment.task_id = self.kwargs.get('pk')
-        comment.creator = self.request.user
-        comment.parent_id = form.cleaned_data.get('parent')
-        comment.save()
 
-        if self.is_ajax():
-            return JsonResponse({
-                'is_child': comment.is_child_node(),
-                'id': comment.id,
-                'creator': comment.creator.username,
-                'parent_id': comment.parent_id,
-                'time_create': comment.time_create.strftime('%Y-%b-%d %H:%M:%S'),
-                'avatar': comment.creator.profile.avatar.url,
-                'content': comment.content,
-                'get_absolute_url': comment.creator.profile.get_absolute_url()
-            }, status=200)
+@login_required
+def add_comment(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    if request.method == 'POST':
+        Comment.objects.create(task=task, user=request.user, text=request.POST['comment_text'])
+        return redirect('task-info', task_id=task.id)
+    return render(request, 'tasks/add_comment.html', {'task': task})
 
-        return redirect(comment.task.get_absolute_url())
 
-    def handle_no_permission(self):
-        return JsonResponse({'error': 'Необходимо авторизоваться для добавления комментариев'}, status=400)
-
+@login_required
+def task_info(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    if request.method == 'POST':
+        if 'comment_text' in request.POST:
+            Comment.objects.create(task=task, user=request.user, text=request.POST['comment_text'])
+            return redirect('task-info', task_id=task.id)
+    return render(request, 'task/task_info.html', {'task': task})
 
